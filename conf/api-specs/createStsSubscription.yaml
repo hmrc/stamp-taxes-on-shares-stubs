@@ -1,0 +1,964 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+info:
+  contact:
+    email: services.enterpriseintegration@hmrc.gov.uk
+    name: Enterprise Integration Services
+  description: "Receive request from MDTP STS subscription channel with the taxpayer\
+    \ information that is required to subscribe a business partner\n\n### Integration\
+    \ Properties\n \n**API Type**: *Sync*  \n**Design Pattern**: *External to Internal*\
+    \   \n**Protocol**: *HTTPS*   \n**Source System**: *MDTP*   \n**Input Format**:\
+    \ * JSON *  \n**Target System**: *ETMP*  \n**Target System Interface**: *V1.3*\
+    \  \n**Output Format**: * JSON *  \n\n### Non-functional Properties\n\n**Maximum\
+    \ Payload Size**: *1MB*  \n**Maximum Throughput**: *10RPS*  \n\n### Timeouts\n\
+    \n| Type | Parameter | Value |\n|---|---|---|\n| Frontend | Reading client request\
+    \ body | 60s |\n| Frontend | Reading client request headers | 60s |\n| Frontend\
+    \ | Keep-alive client connection | 75s |\n| Frontend | Transmitting a response\
+    \ to the client (sucessive) | 60s |\n| Backend | Establishing a connection with\
+    \ the backend | 60s |\n| Backend | Reading a response from the backend | 60s |\n\
+    | Backend | Transmitting a response to the backend (sucessive) | 60s |\n\n*Note:\
+    \ Total EIS journey (end to end) timeout is cumulative*\n\n### Security\n\n**EIS\
+    \ Requires mTLS (TLS 1.3) and Bearer Token**\n\n"
+  title: Create Subscription For STS
+  version: 1.0.1
+  x-integration-catalogue:
+    backends:
+    - etmp
+    domain: 5
+    platform: CMA
+    programme: sts
+    publisher-reference: sts102a
+    reviewed-date: '2024-10-22T15:20:41Z'
+    status: ALPHA
+    sub-domain: 5.6
+    type: sync
+openapi: 3.1.0
+paths:
+  /sts/sts102a/v1:
+    post:
+      operationId: CreateSubscriptionForSTS
+      parameters:
+      - description: Acceptable response content type(s)
+        in: header
+        name: accept
+        required: true
+        schema:
+          enum:
+          - application/json
+          examples: [application/json]
+          type: string
+      - description: Bearer token for access to EIS system
+        in: header
+        name: authorization
+        required: true
+        schema:
+          examples: [Bearer XXXXXXXXXXXXXXXXXXX]
+          pattern: ^Bearer (.*)$
+          type: string
+      - description: Payload content type(s)
+        in: header
+        name: content-type
+        required: true
+        schema:
+          enum:
+          - application/json
+          examples: [application/json]
+          type: string
+      - description: The date and time of the message (in "HTTP-date" format as defined
+          by RFC 7231 Date/Time Formats)
+        in: header
+        name: date
+        required: true
+        schema:
+          examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+          pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+            [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+          type: string
+      - description: A UUID format string for the transaction used for traceability
+          purposes.
+        in: header
+        name: x-correlation-id
+        required: true
+        schema:
+          examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+          pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+          type: string
+      - description: The name or IP address of the application system that submitted
+          the message.
+        in: header
+        name: x-forwarded-host
+        required: true
+        schema:
+          examples: [MDTP]
+          pattern: ^[\w\-\.]{1,255}$
+          type: string
+      - description: A UID format unique identifier for the business process used
+          to relate multiple Correlation ID.
+        in: header
+        name: x-conversation-id
+        required: true
+        schema:
+          examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+          pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            examples:
+              Request example 1:
+                summary: Individual primary contact type
+                value:
+                  gbUser: true
+                  idNumber: XM000123456799
+                  idType: SAFE
+                  primaryContact:
+                    email: mj@gmailqqq.com
+                    individual:
+                      firstName: pamio
+                      lastName: Lname1
+                      middleName: lxtt
+                    mobile: 07834512345
+                    phone: +44-7865412345
+              Request example 2:
+                summary: Individual primary contact within Organisation
+                  type
+                value:
+                  gbUser: true
+                  idNumber: XM000123456865
+                  idType: SAFE
+                  primaryContact:
+                    email: mj@gmailqqq.com
+                    individual:
+                      firstName: pamio
+                      lastName: Lname1
+                      middleName: lxtt
+                    mobile: 07834512345
+                    phone: +44-7865412345
+              Request example 3:
+                summary: Individual primary contact within Agent
+                  type
+                value:
+                  gbUser: true
+                  idNumber: XM000123456865
+                  idType: SAFE
+                  primaryContact:
+                    email: mj@gmailqqq.com
+                    individual:
+                      firstName: pamio
+                      lastName: Lname1
+                      middleName: lxtt
+                    mobile: 07834512345
+                    phone: +44-7865412345
+            schema:
+              additionalProperties: false
+              properties:
+                gbUser:
+                  type: boolean
+                idNumber:
+                  maxLength: 15
+                  minLength: 1
+                  pattern: ^[A-Za-z0-9]{1,15}$
+                  type: string
+                idType:
+                  enum:
+                  - SAFE
+                  maxLength: 6
+                  minLength: 1
+                  pattern: ^[A-Z0-9]{1,6}$
+                  type: string
+                primaryContact:
+                  description: primaryContact
+                  oneOf:
+                  - additionalProperties: false
+                    description: 'contact individual Type '
+                    properties:
+                      email:
+                        format: email
+                        maxLength: 132
+                        minLength: 1
+                        type: string
+                      individual:
+                        type: object
+                        properties:
+                          firstName:
+                            maxLength: 35
+                            minLength: 1
+                            type: string
+                          lastName:
+                            maxLength: 35
+                            minLength: 1
+                            type: string
+                          middleName:
+                            maxLength: 35
+                            type: string
+                        required:
+                        - firstName
+                        - lastName
+                      mobile:
+                        maxLength: 24
+                        minLength: 1
+                        type: string
+                      phone:
+                        maxLength: 24
+                        minLength: 1
+                        type: string
+                    required:
+                    - individual
+                    - email
+                    type: object
+                  - additionalProperties: false
+                    description: 'contact organisation Type '
+                    properties:
+                      email:
+                        format: email
+                        maxLength: 132
+                        minLength: 1
+                        type: string
+                      mobile:
+                        maxLength: 24
+                        minLength: 1
+                        type: string
+                      organisation:
+                        additionalProperties: false
+                        properties:
+                          name:
+                            maxLength: 105
+                            minLength: 1
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      phone:
+                        maxLength: 24
+                        minLength: 1
+                        type: string
+                    required:
+                    - organisation
+                    - email
+                    type: object
+                  - additionalProperties: false
+                    description: 'contact agent Type '
+                    properties:
+                      email:
+                        format: email
+                        maxLength: 132
+                        minLength: 1
+                        type: string
+                      mobile:
+                        maxLength: 24
+                        minLength: 1
+                        type: string
+                      organisation:
+                        additionalProperties: false
+                        properties:
+                          name:
+                            maxLength: 105
+                            minLength: 1
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      phone:
+                        maxLength: 24
+                        minLength: 1
+                        type: string
+                    required:
+                    - organisation
+                    - email
+                    type: object
+              required:
+              - idType
+              - idNumber
+              - gbUser
+              - primaryContact
+              type: object
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                success:
+                  STSReference: XMFA1234567890
+                  processingDate: '2001-12-17T09:30:47Z'
+              schema:
+                properties:
+                  success:
+                    properties:
+                      STSReference:
+                        maxLength: 15
+                        minLength: 1
+                        type: string
+                      processingDate:
+                        format: date-time
+                        type: string
+                    required:
+                    - processingDate
+                    - STSReference
+                    type: object
+                required:
+                - success
+                type: object
+          description: HTTP 201 indicates a success response
+          headers:
+            content-type:
+              description: Payload content type(s)
+              required: true
+              schema:
+                enum:
+                - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '400':
+          content:
+            application/json:
+              examples:
+                headerValidation:
+                  summary: HTTP 400 is returned with below payload sample when the
+                    submitted payload has failed header validation in EIS layer
+                  value:
+                    errorDetail:
+                      correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
+                      errorCode: '400'
+                      errorMessage: Failed header validation
+                      source: journey-sts102a-service-camel
+                      sourceFaultDetail:
+                        detail:
+                        - 'Failed header validation: Invalid x-correlation-id header'
+                      timestamp: '2020-09-25T21:54:12.015Z'
+                malformedJSON:
+                  summary: HTTP 400 is returned with below payload sample when EIS
+                    has received a malformed JSON message
+                  value:
+                    errorDetail:
+                      correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
+                      errorCode: '422'
+                      errorMessage: Business Error (from backend)
+                      source: Backend
+                      sourceFaultDetail:
+                        detail:
+                        - Business Error (from backend)
+                      timestamp: '2020-09-25T21:57:15.660Z'
+                validation:
+                  summary: HTTP 400 is returned with below payload sample when the
+                    submitted payload has failed schema validation in EIS layer
+                  value:
+                    errorDetail:
+                      correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
+                      errorCode: '400'
+                      errorMessage: Invalid JSON document.
+                      source: journey-sts102a-service-camel
+                      sourceFaultDetail:
+                        detail:
+                        - 'instance value ("FOO") not found in enum (possible values:
+                          ["BAR"])'
+                      timestamp: '2020-09-25T21:54:12.015Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                        - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                    - timestamp
+                    - correlationId
+                    type: object
+                required:
+                - errorDetail
+                type: object
+          description: HTTP 400 indicates a bad request error response
+          headers:
+            content-type:
+              description: Payload content type(s)
+              required: true
+              schema:
+                enum:
+                - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '403':
+          description: HTTP 403 indicates a WaF error from the Cerberus layer
+          headers:
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '404':
+          description: HTTP 404 is returned when there is a resource not found error
+          headers:
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '405':
+          description: HTTP 405 is returned when there is a method not allowed error
+          headers:
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '422':
+          content:
+            application/json:
+              examples:
+                '003':
+                  summary: Request could not be processed
+                  value:
+                    errorDetail:
+                      correlationId: f058ebd6-02f7-4d3f-942e-904344e8cde5
+                      errorCode: '003'
+                      errorMessage: Request could not be processed
+                      source: Backend
+                      sourceFaultDetail:
+                        detail:
+                        - '003 - Request could not be processed'
+                      timestamp: '2016-08-16T18:15:41Z'
+                '004':
+                  summary: Duplicate submission acknowledgment reference
+                  value:
+                    errorDetail:
+                      correlationId: f058ebd6-02f7-4d3f-942e-904344e8cde5
+                      errorCode: '004'
+                      errorMessage: Duplicate submission acknowledgment reference
+                      source: Backend
+                      sourceFaultDetail:
+                        detail:
+                        - '004 - Duplicate submission acknowledgment reference'
+                      timestamp: '2016-08-16T18:15:41Z'
+                '007':
+                  summary: Business Partner already has a Subscription for this regime
+                  value:
+                    errorDetail:
+                      correlationId: f058ebd6-02f7-4d3f-942e-904344e8cde5
+                      errorCode: '007'
+                      errorMessage: 'Business Partner already has a Subscription for
+                        this regime '
+                      source: Backend
+                      sourceFaultDetail:
+                        detail:
+                        - '007 - Business Partner already has a Subscription for this
+                          regime '
+                      timestamp: '2016-08-16T18:15:41Z'
+                '008':
+                  summary: No Business Partner identified for ID provided
+                  value:
+                    errorDetail:
+                      correlationId: f058ebd6-02f7-4d3f-942e-904344e8cde5
+                      errorCode: '008'
+                      errorMessage: No Business Partner identified for ID provided
+                      source: Backend
+                      sourceFaultDetail:
+                        detail:
+                        - '008 - No Business Partner identified for ID provided'
+                      timestamp: '2016-08-16T18:15:41Z'
+                '015':
+                  summary: Invalid ID type
+                  value:
+                    errorDetail:
+                      correlationId: f058ebd6-02f7-4d3f-942e-904344e8cde5
+                      errorCode: '015'
+                      errorMessage: Invalid ID type
+                      source: Backend
+                      sourceFaultDetail:
+                        detail:
+                        - '015 - Invalid ID type'
+                      timestamp: '2016-08-16T18:15:41Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                        - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                    - timestamp
+                    - correlationId
+                    type: object
+                required:
+                - errorDetail
+                type: object
+          description: HTTP 422 indicates a business validation error
+          headers:
+            content-type:
+              description: Payload content type(s)
+              required: true
+              schema:
+                enum:
+                - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '500':
+          content:
+            application/json:
+              examples:
+                backend-4xx:
+                  summary: HTTP 500 is returned when an unhandled status code/4xx
+                    is returned from backend
+                  value:
+                    errorDetail:
+                      correlationId: d60de98c-f499-47f5-b2d6-e80966e8d19e
+                      errorCode: 405
+                      errorMessage: <detail as generated by service>
+                      source: Back End
+                      sourceFaultDetail:
+                        detail:
+                        - <detail as generated by service>
+                      timestamp: '2020-09-28T14:31:41.286Z'
+                backend-5XX:
+                  summary: HTTP 500 is returned for all 5xx responses from the backend
+                  value:
+                    errorDetail:
+                      correlationId: d60de98c-f499-47f5-b2d6-e80966e8d19e
+                      errorCode: 503
+                      errorMessage: <detail as generated by service>
+                      source: Back End
+                      sourceFaultDetail:
+                        detail:
+                        - <detail as generated by service>
+                      timestamp: '2020-09-28T14:31:41.286Z'
+                eis:
+                  summary: HTTP 500 is returned with the below payload sample when
+                    EIS is currently experiencing unexpected problem that requires
+                    service intervention. The error details are populated as generated
+                    by the service based on the encountered error condition.
+                  value:
+                    errorDetail:
+                      correlationId: d60de98c-f499-47f5-b2d6-e80966e8d19e
+                      errorCode: 500
+                      errorMessage: <detail as generated by service>
+                      source: journey-<journey-name>-service-camel
+                      sourceFaultDetail:
+                        detail:
+                        - <detail as generated by service>
+                      timestamp: '2020-09-28T14:31:41.286Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                        - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                    - timestamp
+                    - correlationId
+                    type: object
+                required:
+                - errorDetail
+                type: object
+          description: HTTP 500 indicates an unexpected server error
+          headers:
+            content-type:
+              description: Payload content type(s)
+              required: true
+              schema:
+                enum:
+                - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '503':
+          content:
+            application/json:
+              examples:
+                eis:
+                  summary: HTTP 503 is returned with the below payload sample when
+                    backend system is not currently responding or unavailable. The
+                    error details are populated as generated by the service based
+                    on the backend system error.
+                  value:
+                    errorDetail:
+                      correlationId: e9339322-7840-4099-a543-ae771bf02271
+                      errorCode: 503
+                      errorMessage: <detail as generated by service>
+                      source: journey-<journey-name>-service-camel
+                      sourceFaultDetail:
+                        detail:
+                        - <detail as generated by service>
+                      timestamp: '2020-09-30T14:01:32.786Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                        - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                    - timestamp
+                    - correlationId
+                    type: object
+                required:
+                - errorDetail
+                type: object
+          description: HTTP 503 indicates service is unavailable
+          headers:
+            content-type:
+              description: Payload content type(s)
+              required: true
+              schema:
+                enum:
+                - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+      security:
+      - bearerAuth: []
+
+
