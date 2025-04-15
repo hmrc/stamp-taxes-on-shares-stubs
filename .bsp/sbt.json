@@ -1,0 +1,1 @@
+{"name":"sbt","version":"1.10.3","bspVersion":"2.1.0-M1","languages":["scala"],"argv":["/Users/jhumble/.sdkman/candidates/java/21.0.6-amzn/bin/java","-Xms100m","-Xmx100m","-classpath","/Users/jhumble/.sdkman/candidates/sbt/1.10.2/bin/sbt-launch.jar","-Dsbt.script=/Users/jhumble/.sdkman/candidates/sbt/current/bin/sbt","xsbt.boot.Boot","-bsp"]}
