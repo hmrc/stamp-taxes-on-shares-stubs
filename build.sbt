@@ -1,4 +1,4 @@
-name := """temp-stubs"""
+name := """stamp-taxes-on-shares-stubs"""
 organization := "uk.gov.hmrc"
 
 version := "1.0-SNAPSHOT"
