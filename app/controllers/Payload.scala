@@ -51,9 +51,12 @@ val jsonString = """
 import play.api.libs.json.{JsString, JsValue, Json, OFormat, Writes}
 
 import java.time.format.DateTimeFormatter
-import java.util.{Date}
+import java.util.Date
 
-case class Payload(requestCommon: RequestCommon, requestDetail: RequestDetail)
+case class Payload(
+  registerWithIDRequest: RegisterWithIDRequest)
+
+case class RegisterWithIDRequest(requestCommon: RequestCommon, requestDetail: RequestDetail)
 
 case class RequestCommon(
                           acknowledgementReference: String,
@@ -88,6 +91,7 @@ object Payload:
   given OFormat[Individual] = Json.format[Individual]
   given OFormat[RequestDetail] = Json.format[RequestDetail]
   given OFormat[RequestCommon] = Json.format[RequestCommon]
+  given OFormat[RegisterWithIDRequest] = Json.format[RegisterWithIDRequest]
   given OFormat[Payload] = Json.format[Payload]
 
   def apply(
@@ -103,4 +107,5 @@ object Payload:
            ): Payload =
     val common = RequestCommon(acknowledgementReference, receiptDate, regime, requestParameters)
     val detail = RequestDetail(IDNumber, IDType, individual, isAnAgent, requiresNameMatch)
-    new Payload(common, detail)
+    val request = RegisterWithIDRequest(common, detail)
+    new Payload(request)
