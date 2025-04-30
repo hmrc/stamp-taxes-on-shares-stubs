@@ -28,11 +28,20 @@ import play.api.libs.json._
 @Singleton
 class SubscriptionController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  def subscribe: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    val jsonResponse = Json.obj(
-      "status" -> "success",
-      "message" -> "This is a static JSON response"
-    )
-    Ok(jsonResponse)
+  def subscribe: Action[JsValue] = Action(parse.json) { request =>
+    request.body.validate[Payload] match {
+      case JsSuccess(_, _) => Ok(Responses.successResponse)
+      case JsError(errors) =>
+        errors.foreach { case (path, validationErrors) =>
+          println(s"Path: $path, Errors: $validationErrors")
+        }
+        // Handle the error
+        val errorResponse = Json.obj(
+          "status" -> "error",
+          "message" -> "Invalid payload"
+        )
+        BadRequest(errorResponse)
+    }
   }
+
 }
