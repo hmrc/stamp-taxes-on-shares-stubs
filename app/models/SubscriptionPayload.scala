@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package models
 
 import play.api.libs.json.*
 

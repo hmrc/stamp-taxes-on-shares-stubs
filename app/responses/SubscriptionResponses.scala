@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package controllers
+package responses
 
-object Responses {
+object SubscriptionResponses {
 
     var successResponse = """
 {

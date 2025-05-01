@@ -16,10 +16,13 @@
 
 package controllers
 
-import javax.inject._
-import play.api._
-import play.api.mvc._
-import play.api.libs.json._
+import models.Payload
+
+import javax.inject.*
+import play.api.*
+import play.api.mvc.*
+import play.api.libs.json.*
+import responses.SubscriptionResponses
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -30,7 +33,7 @@ class SubscriptionController @Inject()(val controllerComponents: ControllerCompo
 
   def subscribe: Action[JsValue] = Action(parse.json) { request =>
     request.body.validate[Payload] match {
-      case JsSuccess(_, _) => Ok(Responses.successResponse)
+      case JsSuccess(_, _) => Ok(SubscriptionResponses.successResponse)
       case JsError(errors) =>
         errors.foreach { case (path, validationErrors) =>
           println(s"Path: $path, Errors: $validationErrors")
