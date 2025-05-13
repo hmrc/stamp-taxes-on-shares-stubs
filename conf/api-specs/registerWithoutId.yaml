@@ -1,0 +1,1575 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+info:
+  contact:
+    email: services.enterpriseintegration@hmrc.gov.uk
+    name: Enterprise Integration Services
+  description: "## Service Description\n\nCustomer without ID requests registration\
+    \ to Regime and is returned SAFE ID\n\n### Integration Properties\n \n**API Type**:\
+    \ *Sync*  \n**Design Pattern**: *External to Internal*   \n**Protocol**: *HTTPS*\
+    \   \n**Source System**: *MDTP*   \n**Input Format**: *JSON*  \n**Target System**:\
+    \ *ETMP*  \n**Target System Interface**: *V21.1*  \n**Output Format**: *JSON*\
+    \  \n\n### Security\n\n**EIS Requires mTLS (TLS 1.3) and Bearer Token**"
+  title: sts102a - Register Without ID - API
+  version: 1.0.0
+  x-integration-catalogue:
+    domain: 9
+    platform: CMA
+    programme: pdc
+    publisher-reference: sts102a
+    reviewed-date: '2024-08-23T11:05:37Z'
+    status: ALPHA
+    sub-domain: 9.6
+    type: sync
+openapi: 3.1.0
+paths:
+  /sts/sts102a/v1:
+    post:
+      operationId: sts_registerwithoutid_sts102a
+      parameters:
+        - description: Acceptable response content type(s)
+          in: header
+          name: accept
+          required: true
+          schema:
+            pattern: ^application/json$
+            type: string
+        - description: Bearer token for access to EIS system
+          in: header
+          name: authorization
+          required: true
+          schema:
+            examples: [Bearer XXXXXXXXXXXXXXXXXXX]
+            pattern: ^Bearer (.*)$
+            type: string
+        - description: Request payload content type(s)
+          in: header
+          name: content-type
+          required: true
+          schema:
+            pattern: ^application/json$
+            type: string
+        - description: The date and time of the message (in "HTTP-date" format as defined
+            by RFC 7231 Date/Time Formats)
+          in: header
+          name: date
+          required: true
+          schema:
+            examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+            pattern: ^(Sun|Mon|Tue|Wed|Thu|Fri|Sat),\s+(0?[1-9]|[1-2][0-9]|3[01])\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+2([0-9][0-9][0-9])\s+(2[0-3]|[0-1][0-9]):([0-5][0-9])(?::(90|[0-5][0-9]))\s+(?:UTC|GMT)$
+            type: string
+        - description: x-conversation-id header
+          in: header
+          name: x-conversation-id
+          required: true
+          schema:
+            pattern: ^[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}$
+            type: string
+        - description: A UUID format string for the transaction used for traceability
+            purposes.
+          in: header
+          name: x-correlation-id
+          required: true
+          schema:
+            examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+            pattern: ^[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}$
+            type: string
+        - description: The name or IP address of the application system that submitted
+            the message.
+          in: header
+          name: x-forwarded-host
+          required: true
+          schema:
+            examples: [MDTP]
+            pattern: ^[a-zA-Z0-9]{1,255}$
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              registerWithoutIDRequest:
+                requestCommon:
+                  acknowledgementReference: ec031b045855445e96f98569ds56cd22
+                  receiptDate: '2001-12-17T09:30:47Z'
+                  regime: STS
+                requestDetail:
+                  address:
+                    addressLine1: ADDRESS1
+                    addressLine2: ADDRESS2
+                    addressLine3: ADDRESS3
+                    addressLine4: ADDRESS4
+                    countryCode: GB
+                    postalCode: bh1 3fg
+                  contactDetails:
+                    emailAddress: ABC@YAHOO.COM
+                    faxNumber: '837587345'
+                    mobileNumber: '7698908090'
+                    phoneNumber: '878798798798'
+                  identification:
+                    idNumber: '65657'
+                    issuingCountryCode: GB
+                    issuingInstitution: ABC
+                  individual:
+                    dateOfBirth: '1999-01-23'
+                    firstName: FIRST NAME
+                    lastName: LAST NAME
+                    middleName: MIDDLE NAME
+                  isAGroup: false
+                  isAnAgent: true
+            schema:
+              additionalProperties: false
+              properties:
+                registerWithoutIDRequest:
+                  additionalProperties: false
+                  properties:
+                    requestCommon:
+                      additionalProperties: false
+                      properties:
+                        acknowledgementReference:
+                          maxLength: 32
+                          minLength: 1
+                          type: string
+                        receiptDate:
+                          pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'
+                          type: string
+                        regime:
+                          enum:
+                            - ATED
+                            - AWRS
+                            - AMLS
+                            - CBC
+                            - CDS
+                            - DDS
+                            - TAVC
+                            - MTD
+                            - ITSA
+                            - LISA
+                            - FHDDS
+                            - ZSDL
+                            - VATC
+                            - PODA
+                            - PNGR
+                            - CHB
+                            - AGL
+                            - LFT
+                            - APD
+                            - IPT
+                            - BD
+                            - GD
+                            - LD
+                            - BFP
+                            - GRF
+                            - FD
+                            - VTR
+                            - AIR
+                            - NI
+                            - CGT
+                            - DST
+                            - DAC
+                            - PODP
+                            - MDR
+                            - DPRS
+                            - CRFA
+                            - STS
+                          maxLength: 30
+                          minLength: 1
+                          type: string
+                        requestParameters:
+                          items:
+                            additionalProperties: false
+                            properties:
+                              paramName:
+                                maxLength: 100
+                                minLength: 1
+                                type: string
+                              paramValue:
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            required:
+                              - paramName
+                              - paramValue
+                            type: object
+                          minItems: 1
+                          type: array
+                      required:
+                        - receiptDate
+                        - regime
+                        - acknowledgementReference
+                      type: object
+                    requestDetail:
+                      additionalProperties: false
+                      oneOf:
+                        - required:
+                            - individual
+                        - required:
+                            - organisation
+                      properties:
+                        address:
+                          additionalProperties: false
+                          properties:
+                            addressLine1:
+                              maxLength: 35
+                              minLength: 1
+                              type: string
+                            addressLine2:
+                              maxLength: 35
+                              minLength: 1
+                              type: string
+                            addressLine3:
+                              maxLength: 35
+                              minLength: 1
+                              type: string
+                            addressLine4:
+                              maxLength: 35
+                              minLength: 1
+                              type: string
+                            countryCode:
+                              enum:
+                                - AD
+                                - AE
+                                - AF
+                                - AG
+                                - AI
+                                - AL
+                                - AM
+                                - AN
+                                - AO
+                                - AQ
+                                - AR
+                                - AS
+                                - AT
+                                - AU
+                                - AW
+                                - AX
+                                - AZ
+                                - BA
+                                - BB
+                                - BD
+                                - BE
+                                - BF
+                                - BG
+                                - BH
+                                - BI
+                                - BJ
+                                - BM
+                                - BN
+                                - BO
+                                - BQ
+                                - BR
+                                - BS
+                                - BT
+                                - BV
+                                - BW
+                                - BY
+                                - BZ
+                                - CA
+                                - CC
+                                - CD
+                                - CF
+                                - CG
+                                - CH
+                                - CI
+                                - CK
+                                - CL
+                                - CM
+                                - CN
+                                - CO
+                                - CR
+                                - CS
+                                - CU
+                                - CV
+                                - CW
+                                - CX
+                                - CY
+                                - CZ
+                                - DE
+                                - DJ
+                                - DK
+                                - DM
+                                - DO
+                                - DZ
+                                - EC
+                                - EE
+                                - EG
+                                - EH
+                                - ER
+                                - ES
+                                - ET
+                                - EU
+                                - FI
+                                - FJ
+                                - FK
+                                - FM
+                                - FO
+                                - FR
+                                - GA
+                                - GB
+                                - GD
+                                - GE
+                                - GF
+                                - GG
+                                - GH
+                                - GI
+                                - GL
+                                - GM
+                                - GN
+                                - GP
+                                - GQ
+                                - GR
+                                - GS
+                                - GT
+                                - GU
+                                - GW
+                                - GY
+                                - HK
+                                - HM
+                                - HN
+                                - HR
+                                - HT
+                                - HU
+                                - ID
+                                - IE
+                                - IL
+                                - IM
+                                - IN
+                                - IO
+                                - IQ
+                                - IR
+                                - IS
+                                - IT
+                                - JE
+                                - JM
+                                - JO
+                                - JP
+                                - KE
+                                - KG
+                                - KH
+                                - KI
+                                - KM
+                                - KN
+                                - KP
+                                - KR
+                                - KW
+                                - KY
+                                - KZ
+                                - LA
+                                - LB
+                                - LC
+                                - LI
+                                - LK
+                                - LR
+                                - LS
+                                - LT
+                                - LU
+                                - LV
+                                - LY
+                                - MA
+                                - MC
+                                - MD
+                                - ME
+                                - MF
+                                - MG
+                                - MH
+                                - MK
+                                - ML
+                                - MM
+                                - MN
+                                - MO
+                                - MP
+                                - MQ
+                                - MR
+                                - MS
+                                - MT
+                                - MU
+                                - MV
+                                - MW
+                                - MX
+                                - MY
+                                - MZ
+                                - NA
+                                - NC
+                                - NE
+                                - NF
+                                - NG
+                                - NI
+                                - NL
+                                - 'NO'
+                                - NP
+                                - NR
+                                - NT
+                                - NU
+                                - NZ
+                                - OM
+                                - PA
+                                - PE
+                                - PF
+                                - PG
+                                - PH
+                                - PK
+                                - PL
+                                - PM
+                                - PN
+                                - PR
+                                - PS
+                                - PT
+                                - PW
+                                - PY
+                                - QA
+                                - RE
+                                - RO
+                                - RS
+                                - RU
+                                - RW
+                                - SA
+                                - SB
+                                - SC
+                                - SD
+                                - SE
+                                - SG
+                                - SH
+                                - SI
+                                - SJ
+                                - SK
+                                - SL
+                                - SM
+                                - SN
+                                - SO
+                                - SR
+                                - SS
+                                - ST
+                                - SV
+                                - SX
+                                - SY
+                                - SZ
+                                - TC
+                                - TD
+                                - TF
+                                - TG
+                                - TH
+                                - TJ
+                                - TK
+                                - TL
+                                - TM
+                                - TN
+                                - TO
+                                - TP
+                                - TR
+                                - TT
+                                - TV
+                                - TW
+                                - TZ
+                                - UA
+                                - UG
+                                - UM
+                                - UN
+                                - US
+                                - UY
+                                - UZ
+                                - VA
+                                - VC
+                                - VE
+                                - VG
+                                - VI
+                                - VN
+                                - VU
+                                - WF
+                                - WS
+                                - YE
+                                - YT
+                                - ZA
+                                - ZM
+                                - ZW
+                              maxLength: 2
+                              minLength: 2
+                              type: string
+                            postalCode:
+                              maxLength: 10
+                              minLength: 1
+                              type: string
+                          required:
+                            - addressLine1
+                            - countryCode
+                          type: object
+                        contactDetails:
+                          additionalProperties: false
+                          properties:
+                            emailAddress:
+                              maxLength: 132
+                              minLength: 1
+                              type: string
+                            faxNumber:
+                              maxLength: 24
+                              minLength: 1
+                              pattern: ^[A-Z0-9 )/(\-*#+]*$
+                              type: string
+                            mobileNumber:
+                              maxLength: 24
+                              minLength: 1
+                              pattern: ^[A-Z0-9 )/(\-*#+]*$
+                              type: string
+                            phoneNumber:
+                              maxLength: 24
+                              minLength: 1
+                              pattern: ^[A-Z0-9 )/(\-*#+]*$
+                              type: string
+                          type: object
+                        identification:
+                          additionalProperties: false
+                          properties:
+                            idNumber:
+                              maxLength: 60
+                              minLength: 1
+                              type: string
+                            issuingCountryCode:
+                              enum:
+                                - AD
+                                - AE
+                                - AF
+                                - AG
+                                - AI
+                                - AL
+                                - AM
+                                - AN
+                                - AO
+                                - AQ
+                                - AR
+                                - AS
+                                - AT
+                                - AU
+                                - AW
+                                - AX
+                                - AZ
+                                - BA
+                                - BB
+                                - BD
+                                - BE
+                                - BF
+                                - BG
+                                - BH
+                                - BI
+                                - BJ
+                                - BM
+                                - BN
+                                - BO
+                                - BQ
+                                - BR
+                                - BS
+                                - BT
+                                - BV
+                                - BW
+                                - BY
+                                - BZ
+                                - CA
+                                - CC
+                                - CD
+                                - CF
+                                - CG
+                                - CH
+                                - CI
+                                - CK
+                                - CL
+                                - CM
+                                - CN
+                                - CO
+                                - CR
+                                - CS
+                                - CU
+                                - CV
+                                - CW
+                                - CX
+                                - CY
+                                - CZ
+                                - DE
+                                - DJ
+                                - DK
+                                - DM
+                                - DO
+                                - DZ
+                                - EC
+                                - EE
+                                - EG
+                                - EH
+                                - ER
+                                - ES
+                                - ET
+                                - EU
+                                - FI
+                                - FJ
+                                - FK
+                                - FM
+                                - FO
+                                - FR
+                                - GA
+                                - GB
+                                - GD
+                                - GE
+                                - GF
+                                - GG
+                                - GH
+                                - GI
+                                - GL
+                                - GM
+                                - GN
+                                - GP
+                                - GQ
+                                - GR
+                                - GS
+                                - GT
+                                - GU
+                                - GW
+                                - GY
+                                - HK
+                                - HM
+                                - HN
+                                - HR
+                                - HT
+                                - HU
+                                - ID
+                                - IE
+                                - IL
+                                - IM
+                                - IN
+                                - IO
+                                - IQ
+                                - IR
+                                - IS
+                                - IT
+                                - JE
+                                - JM
+                                - JO
+                                - JP
+                                - KE
+                                - KG
+                                - KH
+                                - KI
+                                - KM
+                                - KN
+                                - KP
+                                - KR
+                                - KW
+                                - KY
+                                - KZ
+                                - LA
+                                - LB
+                                - LC
+                                - LI
+                                - LK
+                                - LR
+                                - LS
+                                - LT
+                                - LU
+                                - LV
+                                - LY
+                                - MA
+                                - MC
+                                - MD
+                                - ME
+                                - MF
+                                - MG
+                                - MH
+                                - MK
+                                - ML
+                                - MM
+                                - MN
+                                - MO
+                                - MP
+                                - MQ
+                                - MR
+                                - MS
+                                - MT
+                                - MU
+                                - MV
+                                - MW
+                                - MX
+                                - MY
+                                - MZ
+                                - NA
+                                - NC
+                                - NE
+                                - NF
+                                - NG
+                                - NI
+                                - NL
+                                - 'NO'
+                                - NP
+                                - NR
+                                - NT
+                                - NU
+                                - NZ
+                                - OM
+                                - PA
+                                - PE
+                                - PF
+                                - PG
+                                - PH
+                                - PK
+                                - PL
+                                - PM
+                                - PN
+                                - PR
+                                - PS
+                                - PT
+                                - PW
+                                - PY
+                                - QA
+                                - RE
+                                - RO
+                                - RS
+                                - RU
+                                - RW
+                                - SA
+                                - SB
+                                - SC
+                                - SD
+                                - SE
+                                - SG
+                                - SH
+                                - SI
+                                - SJ
+                                - SK
+                                - SL
+                                - SM
+                                - SN
+                                - SO
+                                - SR
+                                - SS
+                                - ST
+                                - SV
+                                - SX
+                                - SY
+                                - SZ
+                                - TC
+                                - TD
+                                - TF
+                                - TG
+                                - TH
+                                - TJ
+                                - TK
+                                - TL
+                                - TM
+                                - TN
+                                - TO
+                                - TP
+                                - TR
+                                - TT
+                                - TV
+                                - TW
+                                - TZ
+                                - UA
+                                - UG
+                                - UM
+                                - UN
+                                - US
+                                - UY
+                                - UZ
+                                - VA
+                                - VC
+                                - VE
+                                - VG
+                                - VI
+                                - VN
+                                - VU
+                                - WF
+                                - WS
+                                - YE
+                                - YT
+                                - ZA
+                                - ZM
+                                - ZW
+                              maxLength: 2
+                              minLength: 2
+                              type: string
+                            issuingInstitution:
+                              maxLength: 40
+                              minLength: 1
+                              type: string
+                          required:
+                            - idNumber
+                            - issuingInstitution
+                            - issuingCountryCode
+                          type: object
+                        individual:
+                          additionalProperties: false
+                          properties:
+                            dateOfBirth:
+                              maxLength: 10
+                              minLength: 10
+                              pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}$
+                              type: string
+                            firstName:
+                              maxLength: 35
+                              minLength: 1
+                              type: string
+                            lastName:
+                              maxLength: 35
+                              minLength: 1
+                              type: string
+                            middleName:
+                              maxLength: 35
+                              minLength: 1
+                              type: string
+                          required:
+                            - firstName
+                            - lastName
+                          type: object
+                        isAGroup:
+                          type: boolean
+                        isAnAgent:
+                          type: boolean
+                        organisation:
+                          additionalProperties: false
+                          properties:
+                            organisationName:
+                              maxLength: 105
+                              minLength: 1
+                              type: string
+                          required:
+                            - organisationName
+                          type: object
+                      required:
+                        - isAGroup
+                        - isAnAgent
+                        - contactDetails
+                      type: object
+                  required:
+                    - requestCommon
+                    - requestDetail
+                  type: object
+              required:
+                - registerWithoutIDRequest
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                registerWithoutIDResponse:
+                  responseCommon:
+                    processingDate: '2001-12-17T09:30:47Z'
+                    returnParameters:
+                      - paramName: SAP_NUMBER
+                        paramValue: 0123456789
+                    status: OK
+                  responseDetail:
+                    ARN: ZARN1234567
+                    SAFEID: XE0000123456789
+              schema:
+                additionalProperties: false
+                description: Comment describing your JSON Schema
+                properties:
+                  registerWithoutIDResponse:
+                    additionalProperties: false
+                    properties:
+                      responseCommon:
+                        additionalProperties: false
+                        properties:
+                          processingDate:
+                            pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'
+                            type: string
+                          returnParameters:
+                            items:
+                              additionalProperties: false
+                              properties:
+                                paramName:
+                                  enum:
+                                    - SAP_NUMBER
+                                  maxLength: 100
+                                  minLength: 1
+                                  type: string
+                                paramValue:
+                                  maxLength: 255
+                                  minLength: 1
+                                  type: string
+                              required:
+                                - paramName
+                                - paramValue
+                              type: object
+                            minItems: 1
+                            type: array
+                          status:
+                            enum:
+                              - OK
+                              - NOT_OK
+                            maxLength: 6
+                            minLength: 1
+                            type: string
+                          statusText:
+                            maxLength: 100
+                            minLength: 1
+                            type: string
+                        required:
+                          - status
+                          - processingDate
+                        type: object
+                      responseDetail:
+                        additionalProperties: false
+                        properties:
+                          ARN:
+                            maxLength: 11
+                            minLength: 11
+                            pattern: '[A-Z]ARN[0-9]{7}'
+                            type: string
+                          SAFEID:
+                            maxLength: 15
+                            minLength: 15
+                            type: string
+                        required:
+                          - SAFEID
+                        type: object
+                    required:
+                      - responseCommon
+                    type: object
+                required:
+                  - registerWithoutIDResponse
+                type: object
+          description: HTTP 200 indicates a success response
+          headers:
+            content-type:
+              description: Request payload content type(s)
+              required: true
+              schema:
+                enum:
+                  - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: false
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '400':
+          content:
+            application/json:
+              examples:
+                eis-headers:
+                  summary: HTTP 400 is returned with below payload sample when the
+                    submitted payload has invalid headers.
+                  value:
+                    errorDetail:
+                      correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
+                      errorCode: '400'
+                      errorMessage: Invalid Headers
+                      source: journey-dct70a-service-camel
+                      sourceFaultDetail:
+                        detail:
+                          - 'MDGValidationException: Invalid Header.'
+                      timestamp: '2020-09-25T21:57:15.660Z'
+                eis-malformed:
+                  summary: HTTP 400 is returned with below payload sample when the
+                    submitted payload has failed schema validation in EIS layer.
+                  value:
+                    errorDetail:
+                      correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
+                      errorCode: '400'
+                      errorMessage: Invalid JSON document.
+                      source: journey-dct70a-service-camel
+                      sourceFaultDetail:
+                        detail:
+                          - 'MDGValidationException: Invalid JSON document.'
+                      timestamp: '2020-09-25T21:57:15.660Z'
+                eis-method:
+                  summary: HTTP 400 is returned with below payload sample when the
+                    submitted payload has invalid method.
+                  value:
+                    errorDetail:
+                      correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
+                      errorCode: '400'
+                      errorMessage: Invalid Method
+                      source: journey-dct70a-service-camel
+                      sourceFaultDetail:
+                        detail:
+                          - 'MDGValidationException: Invalid Method.'
+                      timestamp: '2020-09-25T21:57:15.660Z'
+                eis-schema:
+                  summary: HTTP 400 is returned with below payload sample when the
+                    submitted payload has failed schema validation in EIS layer.
+                  value:
+                    errorDetail:
+                      correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
+                      errorCode: '400'
+                      errorMessage: Invalid JSON document.
+                      source: journey-dct70a-service-camel
+                      sourceFaultDetail:
+                        detail:
+                          - 'instance value ("mdr") not found in enum (possible values:
+                          ["MDR"])'
+                      timestamp: '2020-09-25T21:54:12.015Z'
+          description: HTTP 400 indicates a bad request error response
+          headers:
+            content-type:
+              description: Request payload content type(s)
+              required: true
+              schema:
+                enum:
+                  - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '403':
+          description: HTTP 403 will be returned when the authorization credentials
+            were missing or incorrect in the request or there was an attempt to access
+            a forbidden resource
+          headers:
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '404':
+          content:
+            application/json:
+              example:
+                errorDetail:
+                  correlationId: f1af6020-8f04-4d05-94e7-8a8c7c317b73
+                  errorCode: '404'
+                  errorMessage: Record not found
+                  source: Back End
+                  sourceFaultDetail:
+                    detail:
+                      - Record not found
+                  timestamp: '2021-10-21T13:55:58.976Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                          - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                      - timestamp
+                      - correlationId
+                    type: object
+                required:
+                  - errorDetail
+                type: object
+          description: HTTP 404 will be returned when the requested resource does
+            not exist i.e. when context path is not correct
+          headers:
+            content-type:
+              description: Request payload content type(s)
+              required: true
+              schema:
+                enum:
+                  - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '405':
+          description: HTTP 405 will be returned when an unsupported request method/operation
+            was used for the endpoint
+          headers:
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '409':
+          content:
+            application/json:
+              example:
+                errorDetail:
+                  correlationId: f1af6020-8f04-4d05-94e7-8a8c7c317b73
+                  errorCode: '409'
+                  errorMessage: Duplicate submission
+                  source: backend
+                  sourceFaultDetail:
+                    detail:
+                      - Duplicate submission
+                  timestamp: '2021-09-30T15:40:44.696Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                          - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                      - timestamp
+                      - correlationId
+                    type: object
+                required:
+                  - errorDetail
+                type: object
+          description: HTTP 409 will be returned when the remote endpoint has indicated
+            duplicate submission
+          headers:
+            content-type:
+              description: Request payload content type(s)
+              required: true
+              schema:
+                enum:
+                  - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-conversation-id:
+              description: A UID format unique identifier for the business process
+                used to relate multiple Correlation ID.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '500':
+          content:
+            application/json:
+              examples:
+                backend:
+                  summary: HTTP 500 is returned when an unhandled status code is code
+                    is returned backend
+                  value:
+                    errorDetail:
+                      correlationId: d60de98c-f499-47f5-b2d6-e80966e8d19e
+                      errorCode: 500
+                      errorMessage: <detail as generated by service>
+                      source: Back End
+                      sourceFaultDetail:
+                        detail:
+                          - <detail as generated by service>
+                      timestamp: '2020-09-28T14:31:41.286Z'
+                eis:
+                  summary: HTTP 500 is returned with the below payload sample when
+                    EIS is currently experiencing unexpected problem that requires
+                    service intervention. The error details are populated as generated
+                    by the service based on the encountered error condition.
+                  value:
+                    errorDetail:
+                      correlationId: d60de98c-f499-47f5-b2d6-e80966e8d19e
+                      errorCode: 500
+                      errorMessage: <detail as generated by service>
+                      source: journey-<journey-name>-service-camel
+                      sourceFaultDetail:
+                        detail:
+                          - <detail as generated by service>
+                      timestamp: '2020-09-28T14:31:41.286Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                          - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                      - timestamp
+                      - correlationId
+                    type: object
+                required:
+                  - errorDetail
+                type: object
+          description: HTTP 500 indicates an unexpected server error
+          headers:
+            content-type:
+              description: Request payload content type(s)
+              required: true
+              schema:
+                enum:
+                  - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+        '503':
+          content:
+            application/json:
+              examples:
+                backend_001:
+                  summary: HTTP 503 is returned when a 001 response (request cannot
+                    be preocessed) from the backend
+                  value:
+                    errorDetail:
+                      correlationId: e9339322-7840-4099-a543-ae771bf02271
+                      errorCode: '503'
+                      errorMessage: Request cannot be processed
+                      source: Back End
+                      sourceFaultDetail:
+                        detail:
+                          - 001 - Request cannot be processed
+                      timestamp: '2020-09-30T14:01:32.786Z'
+                backend_5xx:
+                  summary: HTTP 503 is returned for all 5xx responses from the backend
+                  value:
+                    errorDetail:
+                      correlationId: e9339322-7840-4099-a543-ae771bf02271
+                      errorCode: 503
+                      errorMessage: <detail as generated by service>
+                      source: journey-<journey-name>-service-camel
+                      sourceFaultDetail:
+                        detail:
+                          - <detail as generated by service>
+                      timestamp: '2020-09-30T14:01:32.786Z'
+                eis:
+                  summary: HTTP 503 is returned with the below payload sample when
+                    backend system is not currently responding or unavailable. The
+                    error details are populated as generated by the service based
+                    on the backend system error.
+                  value:
+                    errorDetail:
+                      correlationId: e9339322-7840-4099-a543-ae771bf02271
+                      errorCode: 503
+                      errorMessage: <detail as generated by service>
+                      source: journey-<journey-name>-service-camel
+                      sourceFaultDetail:
+                        detail:
+                          - <detail as generated by service>
+                      timestamp: '2020-09-30T14:01:32.786Z'
+              schema:
+                additionalProperties: false
+                properties:
+                  errorDetail:
+                    additionalProperties: false
+                    description: Details of the error that has been generated
+                    properties:
+                      correlationId:
+                        description: A UUID format string for the transaction used
+                          for traceability purposes
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                      errorCode:
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                      errorMessage:
+                        maxLength: 255
+                        minLength: 1
+                        type: string
+                      source:
+                        maxLength: 40
+                        minLength: 1
+                        type: string
+                      sourceFaultDetail:
+                        additionalProperties: false
+                        properties:
+                          detail:
+                            items:
+                              description: Detail of the error source fault
+                              type: string
+                            type: array
+                          restFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                          soapFault:
+                            description: This is to wrapping the lower-level fault
+                              returned from a SOAP or REST backend system
+                            type: object
+                        required:
+                          - detail
+                        type: object
+                      timestamp:
+                        description: Timestamp indicating when the error occurred
+                        maxLength: 35
+                        minLength: 1
+                        type: string
+                    required:
+                      - timestamp
+                      - correlationId
+                    type: object
+                required:
+                  - errorDetail
+                type: object
+          description: HTTP 503 indicates an unexpected technical error
+          headers:
+            content-type:
+              description: Request payload content type(s)
+              required: true
+              schema:
+                enum:
+                  - application/json
+                examples: [application/json]
+                type: string
+            date:
+              description: The date and time of the message (in "HTTP-date" format
+                as defined by RFC 7231 Date/Time Formats)
+              required: true
+              schema:
+                examples: [Fri, 01 Mar 2019 15:00:00 GMT]
+                pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [0-9]{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                  [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} (UTC|GMT)$
+                type: string
+            x-correlation-id:
+              description: A UUID format string for the transaction used for traceability
+                purposes.
+              required: true
+              schema:
+                examples: [f92d12cd-7087-42b9-b7ae-b32665c5dc31]
+                pattern: ^[0-9a-fA-F]{8}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{4}[-][0-9a-fA-F]{12}$
+                type: string
+      security:
+        - bearerAuth: []
+servers:
+  - description: Gateway mdtp-to-eis-cma (mTLS required)
+    url: https://gateway.n.mes.corp.hmrc.gov.uk:443
+  - description: Gateway mdtp-to-eis-cma (mTLS required)
+    url: https://gateway-live.p.mes.corp.hmrc.gov.uk:443
+    
