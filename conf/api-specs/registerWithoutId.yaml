@@ -1572,4 +1572,3 @@ servers:
     url: https://gateway.n.mes.corp.hmrc.gov.uk:443
   - description: Gateway mdtp-to-eis-cma (mTLS required)
     url: https://gateway-live.p.mes.corp.hmrc.gov.uk:443
-    
