@@ -51,7 +51,7 @@ info:
 openapi: 3.1.0
 paths:
   /sts/sts102b/v1:
-    post:
+    put:
       operationId: STSSubscriptionAmendAPI
       parameters:
         - description: Acceptable response content type(s)
