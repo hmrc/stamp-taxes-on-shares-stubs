@@ -3,4 +3,6 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-PUT     /sts/sts102b/v1             controllers.SubscriptionController.subscribe()
+POST    /sts/sts102b/v1             controllers.SubscriptionController.create()
+PUT     /sts/sts102b/v1             controllers.SubscriptionController.amend()
+POST    /sts/sts102a/v1             controllers.SubscriptionController.registerWithoutId()
