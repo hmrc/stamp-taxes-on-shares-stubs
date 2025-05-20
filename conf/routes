@@ -5,3 +5,4 @@
 
 PUT     /sts/sts102b/v1             controllers.SubscriptionController.subscribe()
 POST    /sts/sts102a/v1             controllers.SubscriptionController.registerWithoutId()
+PUT     /sts/sts102a/v1             controllers.SubscriptionController.registerWithId()
