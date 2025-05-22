@@ -21,7 +21,7 @@ info:
     \ to the backend (sucessive) | 60s |\n\n*Note: Total EIS journey (end to end)\
     \ timeout is cumulative*\n\n### Security\n\n**EIS Requires mTLS (TLS 1.3) and\
     \ Bearer Token**\n\n**EIS Requires Bearer Token**"
-  title: sts102c - EIS API Integration (Sync)
+  title: sts102b - EIS API Integration (Sync)
   version: 1.0.0
   x-integration-catalogue:
     backends:
@@ -29,14 +29,14 @@ info:
     domain: 9
     platform: CMA
     programme: dac
-    publisher-reference: sts102c
+    publisher-reference: sts102b
     reviewed-date: '2024-11-13T11:07:22Z'
     status: ALPHA
     sub-domain: 9.6
     type: sync
 openapi: 3.1.0
 paths:
-  /sts/sts102c/v1:
+  /sts/sts102b/v1:
     get:
       operationId: STSSubscriptionDisplayAPI
       parameters:
