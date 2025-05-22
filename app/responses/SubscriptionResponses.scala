@@ -17,8 +17,8 @@
 package responses
 
 object SubscriptionResponses {
-
-    var successResponse = """
+  
+  val successResponse = s"""
 {
   "registerWithIDResponse": {
     "responseCommon": {

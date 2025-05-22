@@ -81,6 +81,9 @@ case class Individual(
                        lastName: String,
                        middleName: String
                      )
+object Individual {
+  given OFormat[Individual] = Json.format[Individual]
+}
 
 given dateWrites: Writes[Date] with
   def writes(d: Date): JsValue =
