@@ -47,4 +47,17 @@ class SubscriptionController @Inject()(val controllerComponents: ControllerCompo
     }
   }
 
+  def view: Action[AnyContent] = Action { request =>
+    request.headers.get("stsReference").map { stsReference =>
+      Ok(responses.SubscriptionView.successResponse(stsReference))
+    }.getOrElse {
+      // Handle the error
+      val errorResponse = Json.obj(
+        "status" -> "error",
+        "message" -> "Invalid payload"
+      )
+      BadRequest(errorResponse)
+    }
+  }
+
 }
