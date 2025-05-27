@@ -5,7 +5,6 @@ components:
       type: http
 info:
   contact:
-    email: services.enterpriseintegration@hmrc.gov.uk
     name: Enterprise Integration Services
   description: "STS Subscription View API\n\n### Integration Properties\n\
     \ \n**API Type**: *Sync*  \n**Design Pattern**: *Internal to Internal*   \n**Protocol**:\
