@@ -5,7 +5,6 @@ components:
       type: http
 info:
   contact:
-    email: services.enterpriseintegration@hmrc.gov.uk
     name: Enterprise Integration Services
   description: "## Service Description\n\nCustomer without ID requests registration\
     \ to Regime and is returned SAFE ID\n\n### Integration Properties\n \n**API Type**:\
