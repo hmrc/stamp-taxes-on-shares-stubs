@@ -39,6 +39,16 @@ object SubscriptionPayload {
                           )
 
   case class RequestParameter(paramName: String, paramValue: String)
+  
+  case class Individual(
+                         dateOfBirth: Date,
+                         firstName: String,
+                         lastName: String,
+                         middleName: String
+                       )
+  object Individual {
+    given OFormat[Individual] = Json.format[Individual]
+  }
 
   case class RequestDetail(
                             IDNumber: Int,
@@ -47,13 +57,7 @@ object SubscriptionPayload {
                             isAnAgent: Boolean,
                             requiresNameMatch: Boolean
                           )
-
-  case class Individual(
-                         dateOfBirth: Date,
-                         firstName: String,
-                         lastName: String,
-                         middleName: String
-                       )
+  
 
   given dateWrites: Writes[Date] with
     def writes(d: Date): JsValue =
