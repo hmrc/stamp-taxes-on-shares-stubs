@@ -16,7 +16,6 @@
 
 package controllers
 
-import models.Payload
 
 import javax.inject.*
 import play.api.*
@@ -27,7 +26,7 @@ import play.api.libs.json.*
 class SubscriptionController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
   def create: Action[JsValue] = Action(parse.json) { request =>
-    request.body.validate[Payload] match {
+    request.body.validate[models.SubscriptionPayload.Payload] match {
       case JsSuccess(_, _) => Ok(responses.SubscriptionCreate.successResponse)
       case JsError(errors) =>
         errors.foreach { case (path, validationErrors) =>
@@ -86,4 +85,21 @@ class SubscriptionController @Inject()(val controllerComponents: ControllerCompo
         BadRequest(errorResponse)
     }
   }
+
+  def registerWithId: Action[JsValue] = Action(parse.json) { request =>
+    request.body.validate[models.registerWithId.Payload] match {
+      case JsSuccess(_, _) => Ok(responses.RegisterWithId.successResponse)
+      case JsError(errors) =>
+        errors.foreach { case (path, validationErrors) =>
+          println(s"Path: $path, Errors: $validationErrors")
+        }
+        // Handle the error
+        val errorResponse = Json.obj(
+          "status" -> "error",
+          "message" -> "Invalid payload"
+        )
+        BadRequest(errorResponse)
+    }
+  }
+  
 }

@@ -8,3 +8,4 @@ PUT     /sts/sts102b/v1             controllers.SubscriptionController.amend()
 POST    /sts/sts102b/v1             controllers.SubscriptionController.create()
 
 POST    /sts/sts102a/v1             controllers.SubscriptionController.registerWithoutId()
+PUT     /sts/sts102a/v1             controllers.SubscriptionController.registerWithId()

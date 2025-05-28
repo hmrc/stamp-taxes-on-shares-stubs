@@ -6,28 +6,30 @@ components:
 info:
   contact:
     name: Enterprise Integration Services
-  description: "## Service Description\n\nCustomer without ID requests registration\
-    \ to Regime and is returned SAFE ID\n\n### Integration Properties\n \n**API Type**:\
+  description: "## Service Description\n\nThis API allows MDTP register as a new business\
+    \ partner within the STS regime. \n\n### Integration Properties\n \n**API Type**:\
     \ *Sync*  \n**Design Pattern**: *External to Internal*   \n**Protocol**: *HTTPS*\
     \   \n**Source System**: *MDTP*   \n**Input Format**: *JSON*  \n**Target System**:\
-    \ *ETMP*  \n**Target System Interface**: *V21.1*  \n**Output Format**: *JSON*\
-    \  \n\n### Security\n\n**EIS Requires mTLS (TLS 1.3) and Bearer Token**"
-  title: sts102a - Register Without ID - API
+    \ *ETMP*  \n**Target System Interface**: *V21.2*  \n**Output Format**: *JSON*\
+    \  \n\n### Security\n\n**EIS Requires mTLS (TLS 1.3) and Bearer Token** "
+  title: Register With ID Sync Service
   version: 1.0.0
   x-integration-catalogue:
+    backends:
+      - etmp
     domain: 9
     platform: CMA
     programme: pdc
-    publisher-reference: sts102a
-    reviewed-date: '2024-08-23T11:05:37Z'
+    publisher-reference: sts102b
+    reviewed-date: '2024-10-18T14:44:10Z'
     status: ALPHA
     sub-domain: 9.6
     type: sync
 openapi: 3.1.0
 paths:
   /sts/sts102a/v1:
-    post:
-      operationId: sts_registerwithoutid_sts102a
+    put:
+      operationId: sts102b
       parameters:
         - description: Acceptable response content type(s)
           in: header
@@ -89,39 +91,33 @@ paths:
         content:
           application/json:
             example:
-              registerWithoutIDRequest:
+              registerWithIDRequest:
                 requestCommon:
-                  acknowledgementReference: ec031b045855445e96f98569ds56cd22
-                  receiptDate: '2001-12-17T09:30:47Z'
+                  acknowledgementReference: ec031b045855445e96f98a569ds56cd2
+                  receiptDate: '2016-08-16T15:55:30Z'
                   regime: STS
+                  requestParameters:
+                    - paramName: REGIME
+                      paramValue: STS
                 requestDetail:
-                  address:
-                    addressLine1: ADDRESS1
-                    addressLine2: ADDRESS2
-                    addressLine3: ADDRESS3
-                    addressLine4: ADDRESS4
-                    countryCode: GB
-                    postalCode: bh1 3fg
-                  contactDetails:
-                    emailAddress: ABC@YAHOO.COM
-                    faxNumber: '837587345'
-                    mobileNumber: '7698908090'
-                    phoneNumber: '878798798798'
-                  identification:
-                    idNumber: '65657'
-                    issuingCountryCode: GB
-                    issuingInstitution: ABC
+                  IDNumber: 0123456789
+                  IDType: NINO
                   individual:
-                    dateOfBirth: '1999-01-23'
-                    firstName: FIRST NAME
-                    lastName: LAST NAME
-                    middleName: MIDDLE NAME
-                  isAGroup: false
-                  isAnAgent: true
+                    dateOfBirth: '1999-12-20'
+                    firstName: Fred
+                    lastName: Flint
+                    middleName: Flintstone
+                  isAnAgent: false
+                  requiresNameMatch: true
             schema:
+              $schema: http://json-schema.org/draft-04/schema#
               additionalProperties: false
+              description: This EIS schema is for the STS Project - STS70b UK Customer
+                Requests MDR Registration service
+              maxProperties: 1
+              minProperties: 1
               properties:
-                registerWithoutIDRequest:
+                registerWithIDRequest:
                   additionalProperties: false
                   properties:
                     requestCommon:
@@ -132,6 +128,7 @@ paths:
                           minLength: 1
                           type: string
                         receiptDate:
+                          format: date-time
                           pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'
                           type: string
                         regime:
@@ -192,612 +189,67 @@ paths:
                               - paramName
                               - paramValue
                             type: object
-                          minItems: 1
                           type: array
                       required:
-                        - receiptDate
                         - regime
+                        - receiptDate
                         - acknowledgementReference
                       type: object
                     requestDetail:
                       additionalProperties: false
+                      anyOf:
+                        - properties:
+                            IDType:
+                              enum:
+                                - UTR
+                                - EORI
+                        - not:
+                            properties:
+                              IDType:
+                                enum:
+                                  - NINO
+                            required:
+                              - organisation
+                      not:
+                        required:
+                          - individual
+                          - organisation
                       oneOf:
-                        - required:
-                            - individual
-                        - required:
-                            - organisation
+                        - oneOf:
+                            - required:
+                                - individual
+                            - required:
+                                - organisation
+                          properties:
+                            requiresNameMatch:
+                              enum:
+                                - true
+                        - not:
+                            properties:
+                              requiresNameMatch:
+                                enum:
+                                  - true
                       properties:
-                        address:
-                          additionalProperties: false
-                          properties:
-                            addressLine1:
-                              maxLength: 35
-                              minLength: 1
-                              type: string
-                            addressLine2:
-                              maxLength: 35
-                              minLength: 1
-                              type: string
-                            addressLine3:
-                              maxLength: 35
-                              minLength: 1
-                              type: string
-                            addressLine4:
-                              maxLength: 35
-                              minLength: 1
-                              type: string
-                            countryCode:
-                              enum:
-                                - AD
-                                - AE
-                                - AF
-                                - AG
-                                - AI
-                                - AL
-                                - AM
-                                - AN
-                                - AO
-                                - AQ
-                                - AR
-                                - AS
-                                - AT
-                                - AU
-                                - AW
-                                - AX
-                                - AZ
-                                - BA
-                                - BB
-                                - BD
-                                - BE
-                                - BF
-                                - BG
-                                - BH
-                                - BI
-                                - BJ
-                                - BM
-                                - BN
-                                - BO
-                                - BQ
-                                - BR
-                                - BS
-                                - BT
-                                - BV
-                                - BW
-                                - BY
-                                - BZ
-                                - CA
-                                - CC
-                                - CD
-                                - CF
-                                - CG
-                                - CH
-                                - CI
-                                - CK
-                                - CL
-                                - CM
-                                - CN
-                                - CO
-                                - CR
-                                - CS
-                                - CU
-                                - CV
-                                - CW
-                                - CX
-                                - CY
-                                - CZ
-                                - DE
-                                - DJ
-                                - DK
-                                - DM
-                                - DO
-                                - DZ
-                                - EC
-                                - EE
-                                - EG
-                                - EH
-                                - ER
-                                - ES
-                                - ET
-                                - EU
-                                - FI
-                                - FJ
-                                - FK
-                                - FM
-                                - FO
-                                - FR
-                                - GA
-                                - GB
-                                - GD
-                                - GE
-                                - GF
-                                - GG
-                                - GH
-                                - GI
-                                - GL
-                                - GM
-                                - GN
-                                - GP
-                                - GQ
-                                - GR
-                                - GS
-                                - GT
-                                - GU
-                                - GW
-                                - GY
-                                - HK
-                                - HM
-                                - HN
-                                - HR
-                                - HT
-                                - HU
-                                - ID
-                                - IE
-                                - IL
-                                - IM
-                                - IN
-                                - IO
-                                - IQ
-                                - IR
-                                - IS
-                                - IT
-                                - JE
-                                - JM
-                                - JO
-                                - JP
-                                - KE
-                                - KG
-                                - KH
-                                - KI
-                                - KM
-                                - KN
-                                - KP
-                                - KR
-                                - KW
-                                - KY
-                                - KZ
-                                - LA
-                                - LB
-                                - LC
-                                - LI
-                                - LK
-                                - LR
-                                - LS
-                                - LT
-                                - LU
-                                - LV
-                                - LY
-                                - MA
-                                - MC
-                                - MD
-                                - ME
-                                - MF
-                                - MG
-                                - MH
-                                - MK
-                                - ML
-                                - MM
-                                - MN
-                                - MO
-                                - MP
-                                - MQ
-                                - MR
-                                - MS
-                                - MT
-                                - MU
-                                - MV
-                                - MW
-                                - MX
-                                - MY
-                                - MZ
-                                - NA
-                                - NC
-                                - NE
-                                - NF
-                                - NG
-                                - NI
-                                - NL
-                                - 'NO'
-                                - NP
-                                - NR
-                                - NT
-                                - NU
-                                - NZ
-                                - OM
-                                - PA
-                                - PE
-                                - PF
-                                - PG
-                                - PH
-                                - PK
-                                - PL
-                                - PM
-                                - PN
-                                - PR
-                                - PS
-                                - PT
-                                - PW
-                                - PY
-                                - QA
-                                - RE
-                                - RO
-                                - RS
-                                - RU
-                                - RW
-                                - SA
-                                - SB
-                                - SC
-                                - SD
-                                - SE
-                                - SG
-                                - SH
-                                - SI
-                                - SJ
-                                - SK
-                                - SL
-                                - SM
-                                - SN
-                                - SO
-                                - SR
-                                - SS
-                                - ST
-                                - SV
-                                - SX
-                                - SY
-                                - SZ
-                                - TC
-                                - TD
-                                - TF
-                                - TG
-                                - TH
-                                - TJ
-                                - TK
-                                - TL
-                                - TM
-                                - TN
-                                - TO
-                                - TP
-                                - TR
-                                - TT
-                                - TV
-                                - TW
-                                - TZ
-                                - UA
-                                - UG
-                                - UM
-                                - UN
-                                - US
-                                - UY
-                                - UZ
-                                - VA
-                                - VC
-                                - VE
-                                - VG
-                                - VI
-                                - VN
-                                - VU
-                                - WF
-                                - WS
-                                - YE
-                                - YT
-                                - ZA
-                                - ZM
-                                - ZW
-                              maxLength: 2
-                              minLength: 2
-                              type: string
-                            postalCode:
-                              maxLength: 10
-                              minLength: 1
-                              type: string
-                          required:
-                            - addressLine1
-                            - countryCode
-                          type: object
-                        contactDetails:
-                          additionalProperties: false
-                          properties:
-                            emailAddress:
-                              maxLength: 132
-                              minLength: 1
-                              type: string
-                            faxNumber:
-                              maxLength: 24
-                              minLength: 1
-                              pattern: ^[A-Z0-9 )/(\-*#+]*$
-                              type: string
-                            mobileNumber:
-                              maxLength: 24
-                              minLength: 1
-                              pattern: ^[A-Z0-9 )/(\-*#+]*$
-                              type: string
-                            phoneNumber:
-                              maxLength: 24
-                              minLength: 1
-                              pattern: ^[A-Z0-9 )/(\-*#+]*$
-                              type: string
-                          type: object
-                        identification:
-                          additionalProperties: false
-                          properties:
-                            idNumber:
-                              maxLength: 60
-                              minLength: 1
-                              type: string
-                            issuingCountryCode:
-                              enum:
-                                - AD
-                                - AE
-                                - AF
-                                - AG
-                                - AI
-                                - AL
-                                - AM
-                                - AN
-                                - AO
-                                - AQ
-                                - AR
-                                - AS
-                                - AT
-                                - AU
-                                - AW
-                                - AX
-                                - AZ
-                                - BA
-                                - BB
-                                - BD
-                                - BE
-                                - BF
-                                - BG
-                                - BH
-                                - BI
-                                - BJ
-                                - BM
-                                - BN
-                                - BO
-                                - BQ
-                                - BR
-                                - BS
-                                - BT
-                                - BV
-                                - BW
-                                - BY
-                                - BZ
-                                - CA
-                                - CC
-                                - CD
-                                - CF
-                                - CG
-                                - CH
-                                - CI
-                                - CK
-                                - CL
-                                - CM
-                                - CN
-                                - CO
-                                - CR
-                                - CS
-                                - CU
-                                - CV
-                                - CW
-                                - CX
-                                - CY
-                                - CZ
-                                - DE
-                                - DJ
-                                - DK
-                                - DM
-                                - DO
-                                - DZ
-                                - EC
-                                - EE
-                                - EG
-                                - EH
-                                - ER
-                                - ES
-                                - ET
-                                - EU
-                                - FI
-                                - FJ
-                                - FK
-                                - FM
-                                - FO
-                                - FR
-                                - GA
-                                - GB
-                                - GD
-                                - GE
-                                - GF
-                                - GG
-                                - GH
-                                - GI
-                                - GL
-                                - GM
-                                - GN
-                                - GP
-                                - GQ
-                                - GR
-                                - GS
-                                - GT
-                                - GU
-                                - GW
-                                - GY
-                                - HK
-                                - HM
-                                - HN
-                                - HR
-                                - HT
-                                - HU
-                                - ID
-                                - IE
-                                - IL
-                                - IM
-                                - IN
-                                - IO
-                                - IQ
-                                - IR
-                                - IS
-                                - IT
-                                - JE
-                                - JM
-                                - JO
-                                - JP
-                                - KE
-                                - KG
-                                - KH
-                                - KI
-                                - KM
-                                - KN
-                                - KP
-                                - KR
-                                - KW
-                                - KY
-                                - KZ
-                                - LA
-                                - LB
-                                - LC
-                                - LI
-                                - LK
-                                - LR
-                                - LS
-                                - LT
-                                - LU
-                                - LV
-                                - LY
-                                - MA
-                                - MC
-                                - MD
-                                - ME
-                                - MF
-                                - MG
-                                - MH
-                                - MK
-                                - ML
-                                - MM
-                                - MN
-                                - MO
-                                - MP
-                                - MQ
-                                - MR
-                                - MS
-                                - MT
-                                - MU
-                                - MV
-                                - MW
-                                - MX
-                                - MY
-                                - MZ
-                                - NA
-                                - NC
-                                - NE
-                                - NF
-                                - NG
-                                - NI
-                                - NL
-                                - 'NO'
-                                - NP
-                                - NR
-                                - NT
-                                - NU
-                                - NZ
-                                - OM
-                                - PA
-                                - PE
-                                - PF
-                                - PG
-                                - PH
-                                - PK
-                                - PL
-                                - PM
-                                - PN
-                                - PR
-                                - PS
-                                - PT
-                                - PW
-                                - PY
-                                - QA
-                                - RE
-                                - RO
-                                - RS
-                                - RU
-                                - RW
-                                - SA
-                                - SB
-                                - SC
-                                - SD
-                                - SE
-                                - SG
-                                - SH
-                                - SI
-                                - SJ
-                                - SK
-                                - SL
-                                - SM
-                                - SN
-                                - SO
-                                - SR
-                                - SS
-                                - ST
-                                - SV
-                                - SX
-                                - SY
-                                - SZ
-                                - TC
-                                - TD
-                                - TF
-                                - TG
-                                - TH
-                                - TJ
-                                - TK
-                                - TL
-                                - TM
-                                - TN
-                                - TO
-                                - TP
-                                - TR
-                                - TT
-                                - TV
-                                - TW
-                                - TZ
-                                - UA
-                                - UG
-                                - UM
-                                - UN
-                                - US
-                                - UY
-                                - UZ
-                                - VA
-                                - VC
-                                - VE
-                                - VG
-                                - VI
-                                - VN
-                                - VU
-                                - WF
-                                - WS
-                                - YE
-                                - YT
-                                - ZA
-                                - ZM
-                                - ZW
-                              maxLength: 2
-                              minLength: 2
-                              type: string
-                            issuingInstitution:
-                              maxLength: 40
-                              minLength: 1
-                              type: string
-                          required:
-                            - idNumber
-                            - issuingInstitution
-                            - issuingCountryCode
-                          type: object
+                        IDNumber:
+                          maxLength: 30
+                          minLength: 1
+                          type: string
+                        IDType:
+                          enum:
+                            - UTR
+                            - NINO
+                            - EORI
+                          maxLength: 6
+                          minLength: 1
+                          type: string
                         individual:
                           additionalProperties: false
                           properties:
                             dateOfBirth:
+                              format: date
                               maxLength: 10
                               minLength: 10
-                              pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}$
+                              pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
                               type: string
                             firstName:
                               maxLength: 35
@@ -815,8 +267,6 @@ paths:
                             - firstName
                             - lastName
                           type: object
-                        isAGroup:
-                          type: boolean
                         isAnAgent:
                           type: boolean
                         organisation:
@@ -826,20 +276,34 @@ paths:
                               maxLength: 105
                               minLength: 1
                               type: string
+                            organisationType:
+                              enum:
+                                - '0000'
+                                - '0001'
+                                - '0002'
+                                - '0003'
+                                - '0004'
+                              maxLength: 4
+                              minLength: 1
+                              type: string
                           required:
                             - organisationName
+                            - organisationType
                           type: object
+                        requiresNameMatch:
+                          type: boolean
                       required:
-                        - isAGroup
+                        - IDType
+                        - IDNumber
+                        - requiresNameMatch
                         - isAnAgent
-                        - contactDetails
                       type: object
                   required:
                     - requestCommon
                     - requestDetail
                   type: object
               required:
-                - registerWithoutIDRequest
+                - registerWithIDRequest
               type: object
         required: true
       responses:
@@ -847,27 +311,49 @@ paths:
           content:
             application/json:
               example:
-                registerWithoutIDResponse:
+                registerWithIDResponse:
                   responseCommon:
-                    processingDate: '2001-12-17T09:30:47Z'
-                    returnParameters:
-                      - paramName: SAP_NUMBER
-                        paramValue: 0123456789
+                    processingDate: '2016-08-16T15:55:30Z'
                     status: OK
                   responseDetail:
-                    ARN: ZARN1234567
+                    ARN: AARN8764123
                     SAFEID: XE0000123456789
+                    address:
+                      addressLine1: 22 livingston road
+                      addressLine2: '43'
+                      addressLine3: near A&E
+                      addressLine4: Oxford
+                      countryCode: GB
+                      postalCode: OX2 3HD
+                    contactDetails:
+                      emailAddress: anr@bbc.com
+                      faxNumber: 02073648933
+                      mobileNumber: '07634527721'
+                      phoneNumber: 020947376
+                    individual:
+                      dateOfBirth: '1980-12-12'
+                      firstName: Ron
+                      lastName: Singleton
+                      middleName: Madisson
+                    isAnASAgent: true
+                    isAnAgent: false
+                    isAnIndividual: true
+                    isEditable: true
               schema:
+                $schema: http://json-schema.org/draft-04/schema#
                 additionalProperties: false
                 description: Comment describing your JSON Schema
+                maxProperties: 1
+                minProperties: 1
                 properties:
-                  registerWithoutIDResponse:
+                  registerWithIDResponse:
                     additionalProperties: false
                     properties:
                       responseCommon:
                         additionalProperties: false
                         properties:
                           processingDate:
+                            format: date-time
                             pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'
                             type: string
                           returnParameters:
@@ -877,6 +363,8 @@ paths:
                                 paramName:
                                   enum:
                                     - SAP_NUMBER
+                                    - ERRORCODE
+                                    - ERRORTEXT
                                   maxLength: 100
                                   minLength: 1
                                   type: string
@@ -888,7 +376,6 @@ paths:
                                 - paramName
                                 - paramValue
                               type: object
-                            minItems: 1
                             type: array
                           status:
                             enum:
@@ -899,7 +386,6 @@ paths:
                             type: string
                           statusText:
                             maxLength: 100
-                            minLength: 1
                             type: string
                         required:
                           - status
@@ -907,24 +393,427 @@ paths:
                         type: object
                       responseDetail:
                         additionalProperties: false
+                        oneOf:
+                          - required:
+                              - individual
+                          - required:
+                              - organisation
                         properties:
                           ARN:
                             maxLength: 11
-                            minLength: 11
                             pattern: '[A-Z]ARN[0-9]{7}'
                             type: string
                           SAFEID:
                             maxLength: 15
-                            minLength: 15
+                            pattern: '[X][A-Z][0-9]{13}'
                             type: string
+                          address:
+                            additionalProperties: false
+                            oneOf:
+                              - properties:
+                                  countryCode:
+                                    enum:
+                                      - GB
+                                      - IM
+                                      - JE
+                                      - GG
+                                required:
+                                  - postalCode
+                              - not:
+                                  properties:
+                                    countryCode:
+                                      enum:
+                                        - GB
+                                        - IM
+                                        - JE
+                                        - GG
+                            properties:
+                              addressLine1:
+                                maxLength: 35
+                                minLength: 1
+                                type: string
+                              addressLine2:
+                                maxLength: 35
+                                minLength: 1
+                                type: string
+                              addressLine3:
+                                maxLength: 35
+                                minLength: 1
+                                type: string
+                              addressLine4:
+                                maxLength: 35
+                                minLength: 1
+                                type: string
+                              countryCode:
+                                enum:
+                                  - AD
+                                  - AE
+                                  - AF
+                                  - AG
+                                  - AI
+                                  - AL
+                                  - AM
+                                  - AN
+                                  - AO
+                                  - AQ
+                                  - AR
+                                  - AS
+                                  - AT
+                                  - AU
+                                  - AW
+                                  - AX
+                                  - AZ
+                                  - BA
+                                  - BB
+                                  - BD
+                                  - BE
+                                  - BF
+                                  - BG
+                                  - BH
+                                  - BI
+                                  - BJ
+                                  - BM
+                                  - BN
+                                  - BO
+                                  - BQ
+                                  - BR
+                                  - BS
+                                  - BT
+                                  - BV
+                                  - BW
+                                  - BY
+                                  - BZ
+                                  - CA
+                                  - CC
+                                  - CD
+                                  - CF
+                                  - CG
+                                  - CH
+                                  - CI
+                                  - CK
+                                  - CL
+                                  - CM
+                                  - CN
+                                  - CO
+                                  - CR
+                                  - CS
+                                  - CU
+                                  - CV
+                                  - CW
+                                  - CX
+                                  - CY
+                                  - CZ
+                                  - DE
+                                  - DJ
+                                  - DK
+                                  - DM
+                                  - DO
+                                  - DZ
+                                  - EC
+                                  - EE
+                                  - EG
+                                  - EH
+                                  - ER
+                                  - ES
+                                  - ET
+                                  - EU
+                                  - FI
+                                  - FJ
+                                  - FK
+                                  - FM
+                                  - FO
+                                  - FR
+                                  - GA
+                                  - GB
+                                  - GD
+                                  - GE
+                                  - GF
+                                  - GG
+                                  - GH
+                                  - GI
+                                  - GL
+                                  - GM
+                                  - GN
+                                  - GP
+                                  - GQ
+                                  - GR
+                                  - GS
+                                  - GT
+                                  - GU
+                                  - GW
+                                  - GY
+                                  - HK
+                                  - HM
+                                  - HN
+                                  - HR
+                                  - HT
+                                  - HU
+                                  - ID
+                                  - IE
+                                  - IL
+                                  - IM
+                                  - IN
+                                  - IO
+                                  - IQ
+                                  - IR
+                                  - IS
+                                  - IT
+                                  - JE
+                                  - JM
+                                  - JO
+                                  - JP
+                                  - KE
+                                  - KG
+                                  - KH
+                                  - KI
+                                  - KM
+                                  - KN
+                                  - KP
+                                  - KR
+                                  - KW
+                                  - KY
+                                  - KZ
+                                  - LA
+                                  - LB
+                                  - LC
+                                  - LI
+                                  - LK
+                                  - LR
+                                  - LS
+                                  - LT
+                                  - LU
+                                  - LV
+                                  - LY
+                                  - MA
+                                  - MC
+                                  - MD
+                                  - ME
+                                  - MF
+                                  - MG
+                                  - MH
+                                  - MK
+                                  - ML
+                                  - MM
+                                  - MN
+                                  - MO
+                                  - MP
+                                  - MQ
+                                  - MR
+                                  - MS
+                                  - MT
+                                  - MU
+                                  - MV
+                                  - MW
+                                  - MX
+                                  - MY
+                                  - MZ
+                                  - NA
+                                  - NC
+                                  - NE
+                                  - NF
+                                  - NG
+                                  - NI
+                                  - NL
+                                  - 'NO'
+                                  - NP
+                                  - NR
+                                  - NT
+                                  - NU
+                                  - NZ
+                                  - OM
+                                  - PA
+                                  - PE
+                                  - PF
+                                  - PG
+                                  - PH
+                                  - PK
+                                  - PL
+                                  - PM
+                                  - PN
+                                  - PR
+                                  - PS
+                                  - PT
+                                  - PW
+                                  - PY
+                                  - QA
+                                  - RE
+                                  - RO
+                                  - RS
+                                  - RU
+                                  - RW
+                                  - SA
+                                  - SB
+                                  - SC
+                                  - SD
+                                  - SE
+                                  - SG
+                                  - SH
+                                  - SI
+                                  - SJ
+                                  - SK
+                                  - SL
+                                  - SM
+                                  - SN
+                                  - SO
+                                  - SR
+                                  - SS
+                                  - ST
+                                  - SV
+                                  - SX
+                                  - SY
+                                  - SZ
+                                  - TC
+                                  - TD
+                                  - TF
+                                  - TG
+                                  - TH
+                                  - TJ
+                                  - TK
+                                  - TL
+                                  - TM
+                                  - TN
+                                  - TO
+                                  - TP
+                                  - TR
+                                  - TT
+                                  - TV
+                                  - TW
+                                  - TZ
+                                  - UA
+                                  - UG
+                                  - UM
+                                  - UN
+                                  - US
+                                  - UY
+                                  - UZ
+                                  - VA
+                                  - VC
+                                  - VE
+                                  - VG
+                                  - VI
+                                  - VN
+                                  - VU
+                                  - WF
+                                  - WS
+                                  - YE
+                                  - YT
+                                  - ZA
+                                  - ZM
+                                  - ZW
+                                  - ZZ
+                                maxLength: 2
+                                minLength: 2
+                                type: string
+                              postalCode:
+                                maxLength: 10
+                                minLength: 1
+                                type: string
+                            required:
+                              - addressLine1
+                              - countryCode
+                            type: object
+                          contactDetails:
+                            additionalProperties: false
+                            properties:
+                              emailAddress:
+                                maxLength: 132
+                                minLength: 1
+                                type: string
+                              faxNumber:
+                                maxLength: 24
+                                minLength: 1
+                                pattern: '[A-Z0-9 )/(\-*#+]*'
+                                type: string
+                              mobileNumber:
+                                maxLength: 24
+                                minLength: 1
+                                pattern: '[A-Z0-9 )/(\-*#+]*'
+                                type: string
+                              phoneNumber:
+                                maxLength: 24
+                                minLength: 1
+                                pattern: '[A-Z0-9 )/(\-*#+]*'
+                                type: string
+                            type: object
+                          individual:
+                            additionalProperties: false
+                            properties:
+                              dateOfBirth:
+                                format: date
+                                maxLength: 10
+                                minLength: 10
+                                pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+                                type: string
+                              firstName:
+                                maxLength: 35
+                                minLength: 1
+                                type: string
+                              lastName:
+                                maxLength: 35
+                                minLength: 1
+                                type: string
+                              middleName:
+                                maxLength: 35
+                                minLength: 1
+                                type: string
+                            required:
+                              - firstName
+                              - lastName
+                            type: object
+                          isAnASAgent:
+                            type: boolean
+                          isAnAgent:
+                            type: boolean
+                          isAnIndividual:
+                            type: boolean
+                          isEditable:
+                            type: boolean
+                          organisation:
+                            additionalProperties: false
+                            properties:
+                              code:
+                                enum:
+                                  - '0000'
+                                  - '0001'
+                                  - '0002'
+                                  - '0003'
+                                  - '0004'
+                                maxLength: 4
+                                minLength: 1
+                                type: string
+                              isAGroup:
+                                type: boolean
+                              organisationName:
+                                maxLength: 105
+                                minLength: 1
+                                type: string
+                              organisationType:
+                                enum:
+                                  - Not Specified
+                                  - Partnership
+                                  - LLP
+                                  - Corporate Body
+                                  - Unincorporated Body
+                                maxLength: 20
+                                minLength: 1
+                                type: string
+                            required:
+                              - organisationName
+                              - isAGroup
+                            type: object
                         required:
                           - SAFEID
+                          - isEditable
+                          - isAnAgent
+                          - isAnIndividual
+                          - address
+                          - contactDetails
                         type: object
                     required:
                       - responseCommon
                     type: object
                 required:
-                  - registerWithoutIDResponse
+                  - registerWithIDResponse
                 type: object
           description: HTTP 200 indicates a success response
           headers:
@@ -973,7 +862,7 @@ paths:
                       correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
                       errorCode: '400'
                       errorMessage: Invalid Headers
-                      source: journey-dct70a-service-camel
+                      source: journey-dct70b-service-camel
                       sourceFaultDetail:
                         detail:
                           - 'MDGValidationException: Invalid Header.'
@@ -986,7 +875,7 @@ paths:
                       correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
                       errorCode: '400'
                       errorMessage: Invalid JSON document.
-                      source: journey-dct70a-service-camel
+                      source: journey-dct70b-service-camel
                       sourceFaultDetail:
                         detail:
                           - 'MDGValidationException: Invalid JSON document.'
@@ -999,7 +888,7 @@ paths:
                       correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
                       errorCode: '400'
                       errorMessage: Invalid Method
-                      source: journey-dct70a-service-camel
+                      source: journey-dct70b-service-camel
                       sourceFaultDetail:
                         detail:
                           - 'MDGValidationException: Invalid Method.'
@@ -1012,11 +901,11 @@ paths:
                       correlationId: 1ae81b45-41b4-4642-ae1c-db1126900001
                       errorCode: '400'
                       errorMessage: Invalid JSON document.
-                      source: journey-dct70a-service-camel
+                      source: journey-dct70b-service-camel
                       sourceFaultDetail:
                         detail:
-                          - 'instance value ("mdr") not found in enum (possible values:
-                          ["MDR"])'
+                          - 'instance value ("sts") not found in enum (possible values:
+                          ["STS"])'
                       timestamp: '2020-09-25T21:54:12.015Z'
           description: HTTP 400 indicates a bad request error response
           headers:
@@ -1097,6 +986,7 @@ paths:
                       - Record not found
                   timestamp: '2021-10-21T13:55:58.976Z'
               schema:
+                $schema: http://json-schema.org/draft-04/schema#
                 additionalProperties: false
                 properties:
                   errorDetail:
@@ -1231,6 +1121,7 @@ paths:
                       - Duplicate submission
                   timestamp: '2021-09-30T15:40:44.696Z'
               schema:
+                $schema: http://json-schema.org/draft-04/schema#
                 additionalProperties: false
                 properties:
                   errorDetail:
@@ -1355,6 +1246,7 @@ paths:
                           - <detail as generated by service>
                       timestamp: '2020-09-28T14:31:41.286Z'
               schema:
+                $schema: http://json-schema.org/draft-04/schema#
                 additionalProperties: false
                 properties:
                   errorDetail:
@@ -1441,27 +1333,14 @@ paths:
           content:
             application/json:
               examples:
-                backend_001:
-                  summary: HTTP 503 is returned when a 001 response (request cannot
-                    be preocessed) from the backend
-                  value:
-                    errorDetail:
-                      correlationId: e9339322-7840-4099-a543-ae771bf02271
-                      errorCode: '503'
-                      errorMessage: Request cannot be processed
-                      source: Back End
-                      sourceFaultDetail:
-                        detail:
-                          - 001 - Request cannot be processed
-                      timestamp: '2020-09-30T14:01:32.786Z'
-                backend_5xx:
+                backend:
                   summary: HTTP 503 is returned for all 5xx responses from the backend
                   value:
                     errorDetail:
                       correlationId: e9339322-7840-4099-a543-ae771bf02271
                       errorCode: 503
                       errorMessage: <detail as generated by service>
-                      source: journey-<journey-name>-service-camel
+                      source: Back End
                       sourceFaultDetail:
                         detail:
                           - <detail as generated by service>
@@ -1482,6 +1361,7 @@ paths:
                           - <detail as generated by service>
                       timestamp: '2020-09-30T14:01:32.786Z'
               schema:
+                $schema: http://json-schema.org/draft-04/schema#
                 additionalProperties: false
                 properties:
                   errorDetail:

@@ -16,12 +16,11 @@
 
 package models.SubscriptionView
 
+import models.SubscriptionPayload.Individual
+import play.api.libs.json.{Json, OFormat}
+
 object Response {
 
-  import models.Individual
-  
-  import play.api.libs.json.{Json, OFormat}
-  
   case class Organisation(name: String)
   
   object Organisation {
