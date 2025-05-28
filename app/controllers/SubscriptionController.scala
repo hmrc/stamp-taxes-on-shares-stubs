@@ -22,18 +22,13 @@ import javax.inject.*
 import play.api.*
 import play.api.mvc.*
 import play.api.libs.json.*
-import responses.SubscriptionResponses
 
-/**
- * This controller creates an `Action` to handle HTTP requests to the
- * application's home page.
- */
 @Singleton
 class SubscriptionController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  def subscribe: Action[JsValue] = Action(parse.json) { request =>
+  def create: Action[JsValue] = Action(parse.json) { request =>
     request.body.validate[Payload] match {
-      case JsSuccess(_, _) => Ok(SubscriptionResponses.successResponse)
+      case JsSuccess(_, _) => Ok(responses.SubscriptionCreate.successResponse)
       case JsError(errors) =>
         errors.foreach { case (path, validationErrors) =>
           println(s"Path: $path, Errors: $validationErrors")
@@ -60,4 +55,35 @@ class SubscriptionController @Inject()(val controllerComponents: ControllerCompo
     }
   }
 
+  def amend: Action[JsValue] = Action(parse.json) { request =>
+    request.body.validate[models.subscriptionAmend.Request] match {
+      case JsSuccess(_, _) => Ok(responses.SubscriptionAmend.successResponse)
+      case JsError(errors) =>
+        errors.foreach { case (path, validationErrors) =>
+          println(s"Path: $path, Errors: $validationErrors")
+        }
+        // Handle the error
+        val errorResponse = Json.obj(
+          "status" -> "error",
+          "message" -> "Invalid payload"
+        )
+        BadRequest(errorResponse)
+    }
+  }
+
+  def registerWithoutId: Action[JsValue] = Action(parse.json) { request =>
+    request.body.validate[models.registerWithoutId.Payload] match {
+      case JsSuccess(_, _) => Ok(responses.RegisterWithoutId.successResponse)
+      case JsError(errors) =>
+        errors.foreach { case (path, validationErrors) =>
+          println(s"Path: $path, Errors: $validationErrors")
+        }
+        // Handle the error
+        val errorResponse = Json.obj(
+          "status" -> "error",
+          "message" -> "Invalid payload"
+        )
+        BadRequest(errorResponse)
+    }
+  }
 }
