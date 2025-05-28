@@ -5,7 +5,6 @@ components:
       type: http
 info:
   contact:
-    email: services.enterpriseintegration@hmrc.gov.uk
     name: Enterprise Integration Services
   description: "A description of the API (see for best practice and guidance: https://www.gov.uk/guidance/how-to-document-apis#introduce-your-api)\n\
     \n## Service Description\n\nMDTP (Multi-Channel Digital Tax Platform), the front\
@@ -51,7 +50,7 @@ info:
 openapi: 3.1.0
 paths:
   /sts/sts102b/v1:
-    post:
+    put:
       operationId: STSSubscriptionAmendAPI
       parameters:
         - description: Acceptable response content type(s)

@@ -16,7 +16,7 @@
 
 package responses
 
-object SubscriptionResponses {
+object SubscriptionCreate {
 
     var successResponse = """
 {
