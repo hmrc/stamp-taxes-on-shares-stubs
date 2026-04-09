@@ -9,3 +9,8 @@ POST    /sts/sts102b/v1             controllers.SubscriptionController.create()
 
 POST    /sts/sts102a/v1             controllers.SubscriptionController.registerWithoutId()
 PUT     /sts/sts102a/v1             controllers.SubscriptionController.registerWithId()
+
+# STC Transaction API (EtmpTransactionServerOAS)
+POST    /RESTAdapter/stc/transaction/:stcId                 controllers.TransactionController.create(stcId: String)
+GET     /RESTAdapter/stc/transaction/:stcId/:utrn           controllers.TransactionController.view(stcId: String, utrn: String)
+PUT     /RESTAdapter/stc/transaction/:stcId/:utrn           controllers.TransactionController.amend(stcId: String, utrn: String)
